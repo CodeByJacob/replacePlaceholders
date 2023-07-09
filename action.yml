@@ -1,0 +1,40 @@
+name: replace tokens
+author: CodeByJacob
+description: Github Action to replace token
+inputs:
+  file:
+    description: 'File to replace'
+    required: true
+    default: ""
+  prefix:
+    description: 'Token prefix'
+    required: false
+    default: "#{"
+  suffix:
+    description: 'Token suffix'
+    required: false
+    default: "}#"
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Install Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.9
+
+    - name: Set up configuration
+      run: |
+        work_path="${{ github.workspace }}/${{ inputs.file }}"
+        echo "INPUT_FILE=${work_path}" >> $GITHUB_ENV
+        echo "INPUT_SUFFIX=${{ inputs.suffix }}" >> $GITHUB_ENV
+        echo "INPUT_PREFIX=${{ inputs.prefix }}" >> $GITHUB_ENV
+      shell: bash
+
+    - name: Replace tokens
+      working-directory: ${{ github.action_path }}
+      run: python3 main.py
+      shell: bash
