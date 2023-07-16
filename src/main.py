@@ -24,8 +24,10 @@ def replace_tokens(_file_content: str, _payload_data: t.Dict) -> str:
 def prepare_dict_to_replacement(_prefix: str, _suffix: str, _file_content: str) -> t.Dict:
     replacement_dict: t.Dict = {}
 
+    tokens_pattern = fr"{_prefix}(.*?){_suffix}"
+
     matches = re.findall(
-        pattern=r"#{(.*?)}#",
+        pattern=tokens_pattern,
         string=_file_content
     )
 
