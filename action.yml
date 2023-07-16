@@ -36,5 +36,5 @@ runs:
 
     - name: Replace tokens
       working-directory: ${{ github.action_path }}
-      run: python3 main.py
+      run: python3 src/main.py
       shell: bash
